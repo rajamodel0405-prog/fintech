@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>FinGuard – AI Financial Guardian</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f6fb;--card:#fff;--tx:#0f1b33;--mut:#64748b;--bd:#e5eaf3;--navy:#0b1730;--blue:#2563eb;--green:#16a34a;--yel:#d97706;--red:#dc2626;--sh:0 1px 3px rgba(15,27,51,.08),0 6px 18px rgba(15,27,51,.05)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1224;--card:#111d38;--tx:#e8eefc;--mut:#8da0c4;--bd:#1f2e52;--navy:#060d1d;--sh:none}}
+:root[data-theme="dark"]{--bg:#0a1224;--card:#111d38;--tx:#e8eefc;--mut:#8da0c4;--bd:#1f2e52;--navy:#060d1d;--sh:none}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.app{display:flex;min-height:100vh}
+nav{width:232px;background:var(--navy);color:#cbd6ee;padding:20px 14px;position:sticky;top:0;height:100vh;flex:none}
+.logo{font-weight:800;font-size:20px;color:#fff;display:flex;gap:10px;align-items:center;margin-bottom:4px}
+.logo i{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#2563eb,#22d3ee);display:grid;place-items:center;font-style:normal}
+.tag{font-size:11px;color:#7f93bd;margin:0 0 22px 42px}
+nav button{display:flex;width:100%;gap:10px;align-items:center;background:none;border:0;color:inherit;padding:10px 12px;border-radius:10px;font:inherit;cursor:pointer;margin-bottom:2px;text-align:left}
+nav button:hover{background:#13224a}nav button.on{background:#1d3a8a;color:#fff}
+nav .b{margin-left:auto;background:var(--red);color:#fff;border-radius:99px;font-size:11px;padding:0 7px}
+main{flex:1;padding:24px 28px;min-width:0;max-width:1280px}
+h1{font-size:22px;margin:0}.sub{color:var(--mut);margin:2px 0 18px}
+.grid{display:grid;gap:14px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1.4fr 1fr}.g6{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px;box-shadow:var(--sh)}
+.card h3{margin:0 0 10px;font-size:11px;letter-spacing:.08em;color:var(--mut);text-transform:uppercase}
+.kpi .v{font-size:24px;font-weight:700}.kpi .s{font-size:12px;color:var(--mut)}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600}
+.LOW,.Approved,.INFO{background:#dcfce7;color:#166534}.REVIEW,.Review,.WARNING{background:#fef3c7;color:#92400e}.HIGH,.Held{background:#ffedd5;color:#9a3412}.CRITICAL,.Blocked,.Rejected,.Fraud{background:#fee2e2;color:#991b1b}.OPPORTUNITY{background:#dbeafe;color:#1e40af}.Investigating{background:#e0e7ff;color:#3730a3}
+table{width:100%;border-collapse:collapse}th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);text-align:left;padding:8px;border-bottom:1px solid var(--bd)}
+td{padding:10px 8px;border-bottom:1px solid var(--bd)}tr.row{cursor:pointer}tr.row:hover td{background:rgba(37,99,235,.06)}
+.scroll{overflow-x:auto}
+.btn{border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;color:#fff;background:var(--blue)}
+.btn.g{background:var(--green)}.btn.r{background:var(--red)}.btn.y{background:var(--yel)}.btn.o{background:transparent;color:var(--tx);border:1px solid var(--bd)}.btn:hover{filter:brightness(1.08)}
+.btn.big{font-size:16px;padding:14px 28px;background:linear-gradient(135deg,#2563eb,#0ea5e9)}
+.item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bd)}.item:last-child{border:0}
+.dot{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none}
+.ai{background:linear-gradient(135deg,#0b1730,#1d3a8a);color:#e8eefc;border:0}.ai h3{color:#8fb0ff}
+.bar{height:8px;border-radius:9px;background:var(--bd);overflow:hidden}.bar i{display:block;height:100%;border-radius:9px}
+.mut{color:var(--mut)}.row2{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.log{font-size:13px}.log .t{color:var(--mut);white-space:nowrap}
+.toast{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;padding:12px 16px;border-radius:12px;max-width:340px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:9}
+.delta{font-weight:700}
+.cap{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:rgba(11,23,48,.95);color:#fff;padding:14px 20px;border-radius:14px;max-width:min(760px,92vw);font-size:16px;z-index:10;box-shadow:0 10px 30px rgba(0,0,0,.35);display:none}
+.vbtn{margin-top:16px;background:linear-gradient(135deg,#2563eb,#0ea5e9)!important;color:#fff!important;font-weight:600;justify-content:center}
+@media(max-width:860px){.app{flex-direction:column}nav{width:100%;height:auto;position:static;display:flex;overflow-x:auto;padding:10px}nav .logo,nav .tag{display:none}nav button{white-space:nowrap;width:auto}main{padding:16px}.g3,.g2{grid-template-columns:1fr}}
+</style></head><body>
+<div class="app"><nav id="nav"></nav><main id="main"></main></div><div id="toast"></div><div class="cap" id="cap"></div>
+<script>
+const $=s=>document.querySelector(s),fmt=n=>(n<0?'-':'')+'₹'+Math.abs(Math.round(n)).toLocaleString('en-IN'),clamp=(x,a=0,b=100)=>Math.max(a,Math.min(b,x));
+const P={'Aarav Retail':{hi:5000,dev:['iPhone 14'],loc:['Chennai'],h:[9,21]},'Meera Foods':{hi:100000,dev:['Office-PC'],loc:['Bengaluru'],h:[10,18]},'Zen Studio':{hi:9000,dev:['MacBook Pro'],loc:['Hyderabad'],h:[9,20]},'Kiran Traders':{hi:12000,dev:['Office-PC','Galaxy A54'],loc:['Coimbatore'],h:[8,20]},'ABC Ltd':{hi:90000,dev:['Office-PC'],loc:['Mumbai'],h:[10,18]},'Dev Patel':{hi:4000,dev:['Galaxy S22'],loc:['Pune'],h:[9,22]}};
+const W={cash:.3,recv:.2,exp:.15,profit:.15,tax:.1,sec:.1},THR=150000;
+const seed=[[5811,'Aarav Retail',2500,'08 Oct 10:12',10,'Chennai','iPhone 14'],[5812,'Meera Foods',80000,'08 Oct 11:05',11,'Bengaluru','Office-PC'],[5813,'Zen Studio',4200,'08 Oct 12:40',12,'Hyderabad','MacBook Pro'],[5814,'Kiran Traders',8200,'08 Oct 13:15',13,'Coimbatore','Office-PC'],[5815,'ABC Ltd',65000,'08 Oct 14:02',14,'Mumbai','Office-PC'],[5816,'Dev Patel',2800,'08 Oct 15:30',15,'Pune','Galaxy S22'],[5817,'Aarav Retail',3100,'08 Oct 16:11',16,'Chennai','iPhone 14'],[5818,'Meera Foods',92000,'09 Oct 10:48',10,'Bengaluru','Office-PC'],[5819,'Zen Studio',26000,'09 Oct 22:50',22,'Hyderabad','Pixel 7'],[5820,'Dev Patel',9500,'09 Oct 02:40',2,'Pune','Android-Unk'],[5821,'Dev Patel',87000,'09 Oct 03:12',3,'Lagos, NG','Emulator-X'],[5822,'Kiran Traders',9800,'09 Oct 11:20',11,'Coimbatore','Galaxy A54'],[5823,'Zen Studio',3900,'09 Oct 12:02',12,'Hyderabad','MacBook Pro'],[5824,'ABC Ltd',72000,'09 Oct 15:40',15,'Delhi','Office-PC'],[5825,'Aarav Retail',2200,'09 Oct 17:09',17,'Chennai','iPhone 14'],[5826,'Meera Foods',61000,'09 Oct 17:44',17,'Bengaluru','Office-PC']];
+let S;
+function init(){S={page:'dash',day:12,cash:420000,fc:[420000,380000,270000,140000],comp:{cash:84,recv:70,exp:80,profit:85,tax:88,sec:95},tx:[],alerts:[],audit:[],fb:[],events:[],sel:5821,evi:0,rec:'Your projected cash balance may fall below your safe operating threshold within 30 days. Consider collecting Invoice #1042 before approving non-critical expenses.',nid:5827,aid:1,last:null};
+seed.forEach(r=>S.tx.push(mk(...r)));
+[['CRITICAL','Suspicious ₹87,000 transaction (#5821) from Lagos, NG','tx5821'],['WARNING','Invoice #1042 overdue by 18 days (ABC Ltd, ₹85,000)','inv1042'],['WARNING','GST deadline in 5 days – ₹45,000 payable','tax'],['WARNING','30-day forecast (₹1,40,000) is below the safe threshold','fc'],['OPPORTUNITY','Enough cash headroom for a ₹1,00,000 expansion','grow']].forEach(a=>alert(...a,true));
+log('System','Transaction #5821 flagged','Amount anomaly + new device + new location + unusual time','tx5821',true);log('FinGuard AI','Recommended BLOCK / owner review','Risk 90% ≥ 81 critical threshold','tx5821',true);}
+const health=()=>Math.round(Object.keys(W).reduce((s,k)=>s+S.comp[k]*W[k],0));
+function score(t){const p=P[t.c],f=[];
+const am=t.a<=p.hi*1.15?0:Math.min(30,Math.round((t.a/p.hi-1)*8));
+const dv=p.dev.includes(t.d)?0:20,lc=p.loc.includes(t.l)?0:20;
+const out=t.h<p.h[0]?p.h[0]-t.h:t.h>p.h[1]?t.h-p.h[1]:0,tm=out>=3?10:out>0?5:0;
+const vel=t.v>=3?10:t.v==2?5:0;
+const n=[am>10,dv,lc,tm].filter(Boolean).length,bh=n>=3?10:n==2?6:n==1?2:0;
+const m=S.fb.filter(x=>x.loc===t.l||x.dev===t.d).length,ln=Math.min(20,15*m);
+[['Amount anomaly',am,30],['New device',dv,20],['New location',lc,20],['Unusual time',tm,10],['Velocity',vel,10],['Behavior mismatch',bh,10],['Learned from fraud feedback',ln,20]].forEach(x=>f.push(x));
+return{s:Math.min(100,f.reduce((a,x)=>a+x[1],0)),f}}
+const lvl=s=>s>80?'CRITICAL':s>60?'HIGH':s>30?'REVIEW':'LOW',stat=s=>s>80?'Blocked':s>60?'Held':s>30?'Review':'Approved';
+function mk(id,c,a,t,h,l,d,v=0){const o={id,c,a,t,h,l,d,v},r=score(o);o.s=r.s;o.f=r.f;o.st=stat(r.s);return o}
+function why(t){const top=t.f.filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]),p=P[t.c];
+if(!top.length)return `This ₹${t.a.toLocaleString('en-IN')} payment matches ${t.c}'s normal pattern (usual ceiling ≈ ${fmt(p.hi)}, known device, known location, normal hours). Large amount alone is not a risk signal, so it was approved.`;
+let s=`Top signals: ${top.slice(0,4).map(x=>x[0].toLowerCase()+' (+'+x[1]+')').join(', ')}. `;
+s+=t.a>p.hi*1.15?`The amount is ${(t.a/p.hi).toFixed(1)}× this customer's usual ceiling of ${fmt(p.hi)}. `:`The amount itself is within normal range. `;
+if(t.f[6][1])s+=`The location/device matches a pattern you previously confirmed as fraud, so the system raised the score. `;return s}
+function alert(l,m,k,quiet){if(S.alerts.some(a=>a.k===k&&!a.done))return;S.alerts.unshift({id:S.aid++,l,m,k,done:false})}
+function log(actor,action,reason,ref,quiet){const d=new Date();S.audit.unshift({t:d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'}),actor,action,reason,ref})}
+function toast(m){const e=$('#toast');e.innerHTML=`<div class="toast">${m}</div>`;clearTimeout(toast.t);toast.t=setTimeout(()=>e.innerHTML='',4200)}
+const EV=['delay','fraudA','tax','fraudB','growth','expense','normal'];
+function nextEvent(){const hb=health();let k=S.evi<EV.length?EV[S.evi]:EV[Math.floor(Math.random()*EV.length)];S.evi++;S.day++;let title,desc,rec,ref='EVT-'+S.day;
+const c=S.comp,fc=S.fc;
+if(k=='delay'){title='Customer Payment Delayed';desc='ABC Ltd delayed a ₹85,000 payment (Invoice #1042).';fc[1]-=85000;fc[2]-=85000;c.cash-=8;c.recv-=10;alert('WARNING','Cash-flow warning: ABC Ltd payment of ₹85,000 delayed','delay'+S.day);rec='Contact ABC Ltd today and prioritise collection of Invoice #1042. Defer non-critical expenses until it clears.'}
+if(k=='expense'){title='Large Unexpected Expense';desc='Server hardware failure – ₹60,000 emergency repair.';S.cash-=60000;fc.forEach((_,i)=>fc[i]-=60000);c.cash-=6;c.exp-=8;c.profit-=3;alert('WARNING','Unplanned expense of ₹60,000 recorded','exp'+S.day);rec='Pay the repair from cash, but postpone the planned marketing spend by two weeks to protect your safe threshold.'}
+if(k=='tax'){title='Tax Deadline Approaching';desc='GST payment of ₹45,000 is due in 5 days.';fc[1]-=45000;fc[2]-=45000;c.tax-=10;alert('WARNING','GST ₹45,000 due in 5 days','tax'+S.day);rec='Schedule the ₹45,000 GST payment now. Paying on time avoids penalties and restores your tax-compliance score.'}
+if(k=='growth'){const ok=hb>=70&&fc[3]>THR;title='Growth Opportunity';desc='A supplier offers a 12% bulk discount on a ₹1,00,000 inventory purchase.';c.profit+=4;if(ok){alert('OPPORTUNITY','Growth: bulk-buy ₹1,00,000 is affordable','grow'+S.day);rec='Your finances are healthy enough to proceed. Approve the ₹1,00,000 purchase – the 12% discount saves ₹12,000 and your 30-day forecast stays above the safe threshold.'}else{rec=`Not recommended yet. Health is ${hb}/100 and the 30-day forecast (${fmt(fc[3])}) is near the safe threshold of ${fmt(THR)}. Collect receivables first, then revisit.`;alert('INFO','Growth offer deferred: cash buffer too thin','growd'+S.day)}}
+if(k=='normal'){title='Normal Business Day';desc='Steady sales – ₹25,000 collected, no anomalies.';S.cash+=25000;fc.forEach((_,i)=>fc[i]+=25000);c.cash+=2;c.recv+=2;c.profit+=1;rec='All clear. Keep monitoring – no action is needed.'}
+if(k.startsWith('fraud')){const A=k=='fraudA',t=A?mk(S.nid++,'Dev Patel',87000,'Day '+S.day+' 03:12',3,'Lagos, NG','Emulator-X'):mk(S.nid++,'Kiran Traders',18000,'Day '+S.day+' 02:05',2,'Lagos, NG','Linux-Headless');
+S.tx.unshift(t);S.sel=t.id;ref='TX-'+t.id;title='Fraud Attempt Detected';desc=`${fmt(t.a)} from ${t.c} via ${t.d} in ${t.l}. Risk ${t.s}% (${lvl(t.s)}).`;c.sec-=A?8:4;
+alert(t.s>60?'CRITICAL':'WARNING',`Suspicious ${fmt(t.a)} transaction (#${t.id}) – risk ${t.s}%`,'tx'+t.id);log('System',`Transaction #${t.id} flagged`,t.f.filter(x=>x[1]>0).map(x=>x[0]+' +'+x[1]).join(', '),ref);
+rec=A?'Reject this transaction and confirm it as fraud so FinGuard learns this pattern. Open the Investigation page for the full explanation.':(t.f[6][1]?`Caught by adaptive learning: it shares its location with fraud you confirmed earlier, lifting the score to ${t.s}%. Without feedback it would have scored ${t.s-t.f[6][1]}% (Review). Recommend rejecting.`:`Score is only ${t.s}% – a different pattern from the first attack (smaller amount, no odd hours). Review manually. Tip: confirm the earlier fraud so the system learns the shared location.`)}
+const ha=health();S.last={k,title,desc,rec,hb,ha,day:S.day};S.rec=rec;
+S.events.unshift({day:S.day,title,desc,hb,ha});log('Simulator','Event: '+title,desc,ref);log('FinGuard AI','Recommendation issued',rec,ref);
+if(fc[3]<THR||fc[2]<THR)alert('CRITICAL','Cash forecast falls below safe threshold ('+fmt(THR)+')','fc'+(fc[2]<THR?14:30));
+(c.cash=clamp(c.cash),c.recv=clamp(c.recv),c.exp=clamp(c.exp),c.profit=clamp(c.profit),c.tax=clamp(c.tax),c.sec=clamp(c.sec));S.last.ha=health();S.events[0].ha=S.last.ha;render()}
+function decide(id,d){const t=S.tx.find(x=>x.id==id),map={a:['Approved by owner','Owner approved transaction'],r:['Rejected','Owner rejected transaction'],i:['Investigating','Owner started investigation'],f:['Fraud','Owner confirmed fraud']};
+t.st=map[d][0];log('Owner',map[d][1],'Decision recorded; system risk was '+t.s+'%','TX-'+id);
+if(d=='f'){S.fb.unshift({id,result:'Confirmed fraud',reason:t.f.filter(x=>x[1]>0&&x[2]<=30).map(x=>x[0]).join(' + '),ts:new Date().toLocaleString(),loc:t.l,dev:t.d});S.comp.sec=clamp(S.comp.sec+0);log('FinGuard AI','Fraud feedback stored','Location “'+t.l+'” and device “'+t.d+'” added to learned fraud patterns; future scores adjusted','TX-'+id);toast('Feedback stored. Future transactions from “'+t.l+'” now score higher.');S.alerts.filter(a=>a.k==='tx'+id).forEach(a=>a.done=true)}
+if(d=='r'||d=='a')S.alerts.filter(a=>a.k==='tx'+id).forEach(a=>a.done=true);render()}
+const go=p=>{S.page=p;render();scrollTo(0,0)};
+function ring(v){const c=v>=75?'#16a34a':v>=55?'#d97706':'#dc2626',r=54,L=2*Math.PI*r;return `<svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="${r}" fill="none" stroke="var(--bd)" stroke-width="12"/><circle cx="70" cy="70" r="${r}" fill="none" stroke="${c}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${L*v/100} ${L}" transform="rotate(-90 70 70)"/><text x="70" y="72" text-anchor="middle" font-size="34" font-weight="800" fill="currentColor">${v}</text><text x="70" y="92" text-anchor="middle" font-size="11" fill="var(--mut)">/ 100</text></svg>`}
+function line(pts,labels){const w=620,h=240,m=44,mx=Math.max(...pts,THR*1.2)*1.1,mn=0,X=i=>m+i*(w-m-10)/(pts.length-1),Y=v=>h-24-(v-mn)/(mx-mn)*(h-44);
+const path=pts.map((v,i)=>(i?'L':'M')+X(i)+','+Y(v)).join(' ');
+return `<svg viewBox="0 0 ${w} ${h}" width="100%"><line x1="${m}" x2="${w-10}" y1="${Y(THR)}" y2="${Y(THR)}" stroke="#dc2626" stroke-dasharray="5 4"/><text x="${w-12}" y="${Y(THR)-5}" text-anchor="end" font-size="11" fill="#dc2626">Safe threshold ${fmt(THR)}</text><path d="${path} L${X(pts.length-1)},${h-24} L${X(0)},${h-24}Z" fill="rgba(37,99,235,.12)"/><path d="${path}" fill="none" stroke="#2563eb" stroke-width="3"/>${pts.map((v,i)=>`<circle cx="${X(i)}" cy="${Y(v)}" r="5" fill="${v<THR?'#dc2626':'#2563eb'}"/><text x="${X(i)}" y="${Y(v)-10}" text-anchor="middle" font-size="11" fill="currentColor">${fmt(v/1000)}k</text><text x="${X(i)}" y="${h-6}" text-anchor="middle" font-size="11" fill="var(--mut)">${labels[i]}</text>`).join('')}</svg>`}
+function bars(data,labels,cols,names){const w=620,h=230,m=34,mx=Math.max(...data.flat())*1.1,g=(w-m)/labels.length;return `<svg viewBox="0 0 ${w} ${h}" width="100%">${labels.map((l,i)=>data.map((s,j)=>{const bw=g/(data.length+1),x=m+i*g+j*bw+bw/2,bh=s[i]/mx*(h-40);return `<rect x="${x}" y="${h-24-bh}" width="${bw-3}" height="${bh}" rx="4" fill="${cols[j]}"/>`}).join('')+`<text x="${m+i*g+g/2}" y="${h-7}" text-anchor="middle" font-size="11" fill="var(--mut)">${l}</text>`).join('')}</svg><div class="row2 mut" style="font-size:12px">${names.map((n,j)=>`<span><b style="color:${cols[j]}">●</b> ${n}</span>`).join('')}</div>`}
+const pill=(c,t)=>`<span class="pill ${c}">${t||c}</span>`,dotc={CRITICAL:'#dc2626',WARNING:'#d97706',INFO:'#16a34a',OPPORTUNITY:'#2563eb'};
+const open=()=>S.alerts.filter(a=>!a.done);
+const V={
+dash(){const h=health(),fr=Math.max(...S.tx.filter(t=>!['Rejected','Approved by owner','Fraud'].includes(t.st)).map(t=>t.s),0),o=open();
+const k=(a,b,c,x='')=>`<div class="card kpi"><h3>${a}</h3><div class="v" ${x}>${b}</div><div class="s">${c}</div></div>`;
+return `<h1>Good morning, NovaTech Solutions</h1><p class="sub">Monitor. Predict. Protect. Explain.</p>
+<div class="grid g2"><div class="card row2" style="gap:22px">${ring(h)}<div><h3>Financial Health Score</h3><div style="font-size:15px;font-weight:600">${h>=75?'Healthy':h>=55?'Needs attention':'At risk'}</div><div class="mut" style="margin:6px 0 10px">Weighted: Cash 30 · Receivables 20 · Expenses 15 · Profit 15 · Tax 10 · Security 10</div>${Object.keys(W).map(x=>`<div class="row2" style="gap:8px;font-size:12px"><span style="width:76px" class="mut">${{cash:'Cash flow',recv:'Receivables',exp:'Expenses',profit:'Profit',tax:'Tax',sec:'Security'}[x]}</span><div class="bar" style="width:120px"><i style="width:${S.comp[x]}%;background:${S.comp[x]>=70?'#16a34a':S.comp[x]>=50?'#d97706':'#dc2626'}"></i></div><span>${S.comp[x]}</span></div>`).join('')}</div></div>
+<div class="card ai"><h3>✦ AI Recommendation</h3><div style="font-size:15px">${S.rec}</div><div class="row2" style="margin-top:14px"><button class="btn" onclick="go('sim')">Run simulation →</button><span style="font-size:12px;opacity:.7">You make the final decision.</span></div></div></div>
+<div class="grid g6" style="margin:14px 0">${k('Current cash',fmt(S.cash),'Safe threshold '+fmt(THR))}${k('Monthly revenue','₹7,80,000','+6% vs last month')}${k('Monthly expenses','₹4,90,000','63% of revenue')}${k('Outstanding invoices','₹2,10,000','1 overdue')}${k('Tax deadline','5 days','GST ₹45,000')}${k('Fraud risk',lvl(fr),'Peak open score '+fr+'%',`style="color:${dotc[fr>60?'CRITICAL':fr>30?'WARNING':'INFO']}"`)}</div>
+<div class="card"><h3>What needs attention?</h3>${o.slice(0,5).map(a=>`<div class="item"><span class="dot" style="background:${dotc[a.l]}"></span><div style="flex:1">${a.m}</div>${pill(a.l)}</div>`).join('')||'<div class="mut">Nothing needs your attention. 🎉</div>'}</div>`},
+tx(){return `<h1>Transactions</h1><p class="sub">Every payment is scored against the customer's own behavioural profile. Click a row for details.</p><div class="card scroll"><table><tr><th>Customer</th><th>Amount</th><th>Date / time</th><th>Location</th><th>Device</th><th>Risk</th><th>Level</th><th>Status</th></tr>${S.tx.map(t=>`<tr class="row" onclick="S.sel=${t.id};go('inv')"><td><b>${t.c}</b><div class="mut" style="font-size:11px">#${t.id}</div></td><td>${fmt(t.a)}</td><td>${t.t}</td><td>${t.l}</td><td>${t.d}</td><td><b>${t.s}%</b></td><td>${pill(lvl(t.s))}</td><td>${pill(t.st.split(' ')[0]==='Approved'?'Approved':t.st,t.st)}</td></tr>`).join('')}</table></div>`},
+inv(){const t=S.tx.find(x=>x.id==S.sel)||S.tx[0],p=P[t.c],c=t.s>80?'#dc2626':t.s>60?'#ea580c':t.s>30?'#d97706':'#16a34a',done=['Rejected','Approved by owner','Fraud'].includes(t.st);
+return `<h1>Fraud Investigation</h1><p class="sub">Transaction #${t.id} · ${t.c} · ${t.t}</p>
+<div class="grid g2"><div class="card"><div class="row2" style="gap:20px"><div style="font-size:34px;font-weight:800">${fmt(t.a)}</div><div style="font-size:34px;font-weight:800;color:${c}">${t.s}% risk</div>${pill(lvl(t.s))}${pill(t.st.split(' ')[0]==='Approved'?'Approved':t.st,t.st)}</div>
+<h3 style="margin-top:18px">Risk factors</h3>${t.f.map(x=>`<div style="margin-bottom:9px"><div class="row2" style="justify-content:space-between"><span>${x[0]}</span><b>+${x[1]} <span class="mut" style="font-weight:400">/ ${x[2]}</span></b></div><div class="bar"><i style="width:${x[1]/x[2]*100}%;background:${x[1]/x[2]>.6?'#dc2626':x[1]?'#d97706':'#16a34a'}"></i></div></div>`).join('')}
+<h3 style="margin-top:16px">Owner decision</h3><div class="row2"><button class="btn g" onclick="decide(${t.id},'a')">APPROVE</button><button class="btn r" onclick="decide(${t.id},'r')">REJECT</button><button class="btn y" onclick="decide(${t.id},'i')">INVESTIGATE</button><button class="btn o" style="border-color:#dc2626;color:#dc2626" onclick="decide(${t.id},'f')">⚑ CONFIRM FRAUD</button></div>${done?'<p class="mut">Decision recorded in the audit log.</p>':''}</div>
+<div><div class="card ai"><h3>Why was this flagged?</h3><div style="font-size:15px">${why(t)}</div></div>
+<div class="card" style="margin-top:14px"><h3>Customer profile – ${t.c}</h3><div class="log">Normal amount: up to ${fmt(p.hi)}<br>Known devices: ${p.dev.join(', ')}<br>Known locations: ${p.loc.join(', ')}<br>Usual hours: ${p.h[0]}:00 – ${p.h[1]}:00<br><b>This tx:</b> ${t.d} · ${t.l} · ${t.t}</div></div>
+<div class="card" style="margin-top:14px"><h3>Fraud feedback loop (${S.fb.length})</h3>${S.fb.map(x=>`<div class="item log"><div><b>TX #${x.id}</b> – ${x.result}<br><span class="mut">${x.reason} · ${x.loc} / ${x.dev}<br>${x.ts}</span></div></div>`).join('')||'<div class="mut">No feedback yet. Confirm a fraud to teach FinGuard.</div>'}</div></div></div>`},
+fin(){const lab=['Today','7 days','14 days','30 days'],bad=S.fc.findIndex((v,i)=>i&&v<THR);
+return `<h1>Financial Health</h1><p class="sub">Forecast = current cash + expected income − expected expenses</p>${bad>0?`<div class="card" style="border-color:#dc2626;margin-bottom:14px">⚠️ <b>Warning:</b> projected cash drops below the safe threshold in <b>${lab[bad]}</b> (${fmt(S.fc[bad])}).</div>`:''}
+<div class="grid g2"><div class="card"><h3>Cash forecast (7 / 14 / 30 days)</h3>${line(S.fc,lab)}</div><div class="card"><h3>Forecast summary</h3>${S.fc.map((v,i)=>`<div class="item"><div style="flex:1">${lab[i]}</div><b style="color:${v<THR?'#dc2626':'inherit'}">${fmt(v)}</b></div>`).join('')}</div></div>
+<div class="grid g3" style="margin-top:14px"><div class="card"><h3>Revenue vs expenses</h3>${bars([[6.4,6.9,7.1,7.3,7.4,7.8],[4.5,4.7,4.8,4.7,4.9,4.9]],['May','Jun','Jul','Aug','Sep','Oct'],['#2563eb','#f59e0b'],['Revenue ₹L','Expenses ₹L'])}</div><div class="card"><h3>Profit (₹L)</h3>${bars([[1.9,2.2,2.3,2.6,2.5,2.9]],['May','Jun','Jul','Aug','Sep','Oct'],['#16a34a'],['Profit'])}</div><div class="card"><h3>Receivables ageing (₹K)</h3>${bars([[95,30,0,85]],['0-15d','16-30d','31-45d','46d+'],['#8b5cf6'],['Outstanding'])}</div></div>`},
+alerts(){const L=['CRITICAL','WARNING','INFO','OPPORTUNITY'];return `<h1>Alerts</h1><p class="sub">Resolve alerts once you have acted on them.</p><div class="card">${[...S.alerts].sort((a,b)=>a.done-b.done||L.indexOf(a.l)-L.indexOf(b.l)).map(a=>`<div class="item" style="${a.done?'opacity:.5':''}"><span class="dot" style="background:${dotc[a.l]}"></span><div style="flex:1">${a.m}</div>${pill(a.l)}${a.done?'<span class="mut">Resolved</span>':`<button class="btn o" onclick="S.alerts.find(x=>x.id==${a.id}).done=true;log('Owner','Alert resolved',S.alerts.find(x=>x.id==${a.id}).m,'ALT-${a.id}');render()">Resolve</button>`}</div>`).join('')}</div>`},
+sim(){const h=health(),l=S.last;return `<h1>Business Simulator</h1><p class="sub">NovaTech Solutions · unexpected events hit the business – watch FinGuard react.</p>
+<div class="grid g3"><div class="card kpi"><h3>Day</h3><div class="v">${S.day}</div></div><div class="card kpi"><h3>Financial health</h3><div class="v">${h} / 100</div></div><div class="card kpi"><h3>Cash</h3><div class="v">${fmt(S.cash)}</div></div></div>
+<div class="row2" style="margin:16px 0"><button class="btn big" onclick="nextEvent()">NEXT EVENT ▶</button><button class="btn o" onclick="init();S.page='sim';render()">Reset</button><span class="mut">Demo order: late payment → fraud → tax → 2nd fraud → growth → expense → normal → random</span></div>
+${l?`<div class="grid g2"><div class="card"><h3>Event · Day ${l.day}</h3><div style="font-size:19px;font-weight:700">${l.title}</div><p>${l.desc}</p><div class="row2" style="gap:16px"><span>Health <b class="delta">${l.hb} → ${l.ha}</b> <b style="color:${l.ha<l.hb?'#dc2626':l.ha>l.hb?'#16a34a':'inherit'}">(${l.ha-l.hb>0?'+':''}${l.ha-l.hb})</b></span><span>30-day forecast <b>${fmt(S.fc[3])}</b></span></div><div style="margin-top:12px">${l.k.startsWith('fraud')?`<button class="btn r" onclick="S.sel=${S.tx[0].id};go('inv')">Investigate transaction →</button>`:`<button class="btn o" onclick="go('fin')">View forecast →</button>`}</div></div><div class="card ai"><h3>✦ AI Recommendation</h3><div style="font-size:15px">${l.rec}</div></div></div>`:'<div class="card mut">Press NEXT EVENT to start the simulation.</div>'}
+<div class="card" style="margin-top:14px"><h3>Event history</h3>${S.events.map(e=>`<div class="item log"><b style="width:60px">Day ${e.day}</b><div style="flex:1"><b>${e.title}</b><br><span class="mut">${e.desc}</span></div><span>${e.hb}→${e.ha}</span></div>`).join('')||'<span class="mut">No events yet.</span>'}</div>`},
+audit(){return `<h1>Audit Log</h1><p class="sub">Every system action and owner decision, with the reason – transparent and accountable.</p><div class="card scroll"><table class="log"><tr><th>Time</th><th>Actor</th><th>Action</th><th>Reason</th><th>Ref</th></tr>${S.audit.map(a=>`<tr><td class="t">${a.t}</td><td><b>${a.actor}</b></td><td>${a.action}</td><td class="mut">${a.reason}</td><td>${a.ref}</td></tr>`).join('')}</table></div>`}};
+const NAV=[['dash','▦','Dashboard'],['tx','⇄','Transactions'],['inv','🛡','Fraud Investigation'],['fin','📈','Financial Health'],['alerts','🔔','Alerts'],['sim','▶','Simulation'],['audit','📜','Audit Log']];
+function render(){$('#nav').innerHTML=`<div class="logo"><i>🛡</i>FinGuard</div><p class="tag">Monitor. Predict. Protect. Explain.</p>`+NAV.map(n=>`<button class="${S.page==n[0]?'on':''}" onclick="go('${n[0]}')"><span>${n[1]}</span>${n[2]}${n[0]=='alerts'&&open().length?`<span class="b">${open().length}</span>`:''}</button>`).join('')+`<button class="vbtn" onclick="demo()">${voice.on?'■ Stop voice demo':'🔊 Play voice demo'}</button>`;$('#main').innerHTML=V[S.page]()}
+const voice={on:false};
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function say(t){return new Promise(r=>{if(!voice.on)return r();let c=$('#cap');c.textContent=t;c.style.display='block';const u=new SpeechSynthesisUtterance(t);u.rate=.97;u.lang='en-IN';u.onend=r;u.onerror=r;speechSynthesis.speak(u)})}
+function stopDemo(){voice.on=false;speechSynthesis.cancel();$('#cap').style.display='none';render()}
+async function demo(){
+if(voice.on)return stopDemo();
+if(!('speechSynthesis' in window)){toast('Voice is not supported in this browser.');return}
+init();voice.on=true;render();
+const st=async(f,t,ms=700)=>{if(!voice.on)return;if(f)f();render();scrollTo(0,0);await say(t);await wait(ms)};
+await st(()=>{S.page='dash'},'Meet FinGuard, an AI financial guardian for small businesses. Monitor. Predict. Protect. Explain. This is NovaTech Solutions, and its financial health is 82 out of 100. Cash is 4 lakh 20 thousand rupees, revenue is 7 lakh 80 thousand a month, and 2 lakh 10 thousand rupees in invoices are outstanding. FinGuard tells the owner what is happening, what could go wrong, why it matters, and what to do. The owner always makes the final decision.');
+await st(()=>{S.page='sim'},'Now let us simulate the business. I click next event.');
+await st(()=>nextEvent(),`ABC Ltd has delayed an 85 thousand rupee payment. Financial health drops from ${S.last?S.last.hb:82} to ${S.last?S.last.ha:76}, the cash forecast falls, and a warning is created. FinGuard recommends contacting ABC Ltd and prioritising Invoice 1042.`);
+await st(()=>nextEvent(),'Next event: a fraud attempt. An 87 thousand rupee transaction appears.');
+const a=S.tx[0];
+await st(()=>{S.sel=a.id;S.page='inv'},`Risk score ${a.s} percent, critical. This customer normally spends up to 4 thousand rupees. This payment is more than twenty times higher, from a new device, in a new country, at 3 AM. FinGuard shows every risk factor and explains in plain language why it was flagged.`,1200);
+await st(()=>decide(a.id,'r'),'As the owner, I reject the transaction.');
+await st(()=>{S.page='audit'},'The audit log records what the system flagged, what it recommended, and what the owner decided, with timestamps and reasons.',1200);
+await st(()=>{S.sel=a.id;S.page='inv'},'Now I confirm it as fraud. FinGuard stores the result and learns from it.');
+await st(()=>decide(a.id,'f'),'The feedback is saved, and this location and device are now remembered as a fraud pattern.',900);
+await st(()=>{S.sel=5812;S.page='inv'},'FinGuard does not simply block big payments. Meera Foods paid 80 thousand rupees, which is large, but it matches her normal amount, device, location and hours. Risk is zero, so it is approved. No false positive.',1200);
+await st(()=>{S.page='sim';nextEvent()},'Next, a tax deadline approaches. FinGuard warns that GST is due in five days.');
+await st(()=>{S.page='sim';nextEvent()},'Now a second suspicious transaction, with a different pattern: a smaller amount, at a normal hour, on a different device.');
+const b=S.tx[0];
+await st(()=>{S.sel=b.id;S.page='inv'},`It comes from the same location as the fraud I confirmed. Without feedback it would score ${b.s-b.f[6][1]} percent, a review. Because the system learned, it now scores ${b.s} percent, high risk. That is how FinGuard adapts when fraudsters change tactics.`,1200);
+await st(()=>{S.page='sim';nextEvent()},'Finally, a growth opportunity.');
+await st(null,`${S.last.rec}`,900);
+await st(()=>{S.page='dash'},'Financial health, proactive risk detection, adaptive fraud detection, explainability, owner control, and a full audit trail. That is FinGuard.');
+stopDemo()}
+init();render();
+</script></body></html>
